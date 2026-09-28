@@ -1,0 +1,23 @@
+.audio-progress {
+    -fx-pref-height: 5px;
+}
+
+.audio-progress .track {
+    -fx-background-color: #d1d5db;
+}
+
+.audio-progress .bar {
+    -fx-background-color: #22c55e;
+}
+
+.progress-slider {
+    -fx-background-color: transparent;
+}
+
+.progress-slider .track {
+    -fx-background-color: transparent;
+}
+
+.progress-slider .thumb {
+    -fx-background-color: #22c55e;
+}

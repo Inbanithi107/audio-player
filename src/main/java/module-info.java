@@ -5,6 +5,6 @@ module com.techforge.audioplayer {
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
 
-    opens com.techforge.audioplayer to javafx.fxml;
+    opens com.techforge.audioplayer.controller to javafx.fxml;
     exports com.techforge.audioplayer;
 }

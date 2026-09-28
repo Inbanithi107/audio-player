@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.techforge.audioplayer.controller.HomeViewController"
+            stylesheets="@../css/home-view.css"
+            styleClass="root">
+
+    <!-- Header -->
+    <top>
+        <VBox spacing="4" styleClass="header">
+            <Label text="Audio Player"
+                   styleClass="title"/>
+
+            <Label text="Choose an audio file and start listening"
+                   styleClass="subtitle"/>
+        </VBox>
+    </top>
+
+
+    <!-- Main content -->
+    <center>
+        <StackPane styleClass="content">
+
+            <VBox maxWidth="620"
+                  spacing="25"
+                  alignment="CENTER"
+                  styleClass="player-card">
+
+                <!-- Music Icon -->
+                <StackPane styleClass="music-icon">
+
+                    <Circle radius="55"
+                            styleClass="music-circle"/>
+
+                    <Label text="♫"
+                           styleClass="music-symbol"/>
+
+                </StackPane>
+
+
+                <!-- File Picker -->
+                <VBox spacing="12"
+                      alignment="CENTER"
+                      styleClass="file-picker">
+
+                    <Label text="Select an audio file"
+                           styleClass="picker-title"/>
+
+                    <Label text="MP3 • WAV • M4A • AIFF"
+                           styleClass="supported-formats"/>
+
+                    <Button text="Choose File"
+                            onAction="#chooseFile"
+                            styleClass="choose-button"/>
+
+                </VBox>
+
+
+                <!-- Selected file -->
+                <VBox spacing="4"
+                      alignment="CENTER">
+
+                    <Label fx:id="fileNameLabel"
+                           text="No file selected"
+                           styleClass="file-name"/>
+
+                    <Label fx:id="statusLabel"
+                           text="Ready"
+                           styleClass="status"/>
+
+                </VBox>
+
+
+                <!-- Play button -->
+                <Button fx:id="playButton"
+                        text="▶  Play"
+                        disable="true"
+                        styleClass="play-button"
+                />
+
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>
