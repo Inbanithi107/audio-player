@@ -1,0 +1,10 @@
+module com.techforge.audioplayer {
+    requires javafx.controls;
+    requires javafx.fxml;
+
+    requires org.controlsfx.controls;
+    requires org.kordamp.ikonli.javafx;
+
+    opens com.techforge.audioplayer to javafx.fxml;
+    exports com.techforge.audioplayer;
+}
