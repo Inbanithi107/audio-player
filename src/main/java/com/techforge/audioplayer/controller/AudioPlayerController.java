@@ -1,17 +1,17 @@
 package com.techforge.audioplayer.controller;
 
 import com.techforge.audioplayer.core.Player;
-import com.techforge.audioplayer.data.MetaData;
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
+import com.techforge.audioplayer.data.Audio;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
-import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.image.Image;
@@ -19,14 +19,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 
 public class AudioPlayerController {
 
     private final File audioFile;
+
+    @FXML
+    private Button backButton;
 
     @FXML
     private Label audioNameLabel;
@@ -40,6 +45,12 @@ public class AudioPlayerController {
     @FXML
     private ImageView coverImageView;
 
+    @FXML
+    private Label currentTimeLabel;
+
+    @FXML
+    private Label totalTimeLabel;
+
     private Player player;
 
     private Timeline marquee;
@@ -49,13 +60,30 @@ public class AudioPlayerController {
         player = new Player(audioFile);
     }
 
+    public void backButtonAction(){
+        backButton.setOnAction(e->{
+            player.stop();
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(AudioPlayerController.class.getResource("/com/techforge/audioplayer/fxml/home-view.fxml"));
+            try {
+                stage.setScene(new Scene(loader.load(), stage.getWidth(), stage.getHeight()));
+                stage.show();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+    }
+
     @FXML
     public void initialize(){
         audioNameLabel.setText(audioFile.getName());
-        MetaData data = player.getMetadata();
+        Audio data = player.getAudio();
         metadataLabel.setText(data.toString());
-        coverImageView.setImage(new Image(new ByteArrayInputStream(data.image())));
+        coverImageView.setImage(new Image(new ByteArrayInputStream(data.getImage())));
+        totalTimeLabel.setText(data.getDuration());
         Platform.runLater(this::setupMarquee);
+        backButtonAction();
+        player.startFrom(0);
     }
 
     private void setupMarquee() {
