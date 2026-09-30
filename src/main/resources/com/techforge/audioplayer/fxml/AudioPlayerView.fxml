@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.ProgressBar?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 <?import javafx.scene.layout.StackPane?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -35,7 +35,7 @@
     <HBox alignment="CENTER_LEFT" maxWidth="400">
         <Button fx:id="backButton"
                 text="←"
-                prefWidth="40"
+                prefWidth="80"
                 prefHeight="40"
                 style=" -fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-cursor: hand; "
         />
@@ -111,8 +111,6 @@
 
 
         <Slider fx:id="progressSlider"
-                min="0"
-                max="100"
                 styleClass="progress-slider"
                 HBox.hgrow="ALWAYS"/>
 
@@ -155,7 +153,7 @@
         <!-- Play / Resume -->
 
         <Button fx:id="playButton"
-                text="▶"
+                onAction="#togglePlayPause"
 
                 prefWidth="65"
                 prefHeight="65"
@@ -166,7 +164,11 @@
                     -fx-font-size: 25px;
                     -fx-background-radius: 50;
                     -fx-cursor: hand;
-                "/>
+                ">
+            <graphic>
+                <FontIcon fx:id="playPauseIcon" iconLiteral="fas-pause" iconSize="18"/>
+            </graphic>
+        </Button>
 
 
         <!-- Next -->

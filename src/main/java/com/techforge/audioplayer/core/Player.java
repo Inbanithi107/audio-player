@@ -48,6 +48,8 @@ public class Player {
 
     private Thread playbackThread;
 
+    private PositionListener positionListener;
+
     public Player(File file) {
         this.file = file;
     }
@@ -79,7 +81,7 @@ public class Player {
         audio.setDuration(getDuration());
     }
 
-    private String getDuration() {
+    private long getDuration() {
         init(false);
         long frames = 0;
         try {
@@ -91,7 +93,7 @@ public class Player {
             }
             long duration = (long) ((frames * ms_per_frame) / 1000);
             audio.setTotalFrames(frames);
-            return String.format("%d:%02d", duration/60, duration%60);
+            return duration;
         } catch (BitstreamException e) {
             throw new RuntimeException(e);
         }
@@ -109,11 +111,11 @@ public class Player {
     }
 
     public void startFrom(int seconds){
+        if(!stopped){
+            stop();
+        }
+        init(true);
         playbackThread = new Thread(()->{
-            if(!stopped){
-                stop();
-            }
-            init(true);
             Decoder decoder = new Decoder();
             initAudioDevice();
             Header header;
@@ -149,6 +151,8 @@ public class Player {
                         }
                         line.write(pcm, 0, pcm.length);
                         framesPlayed++;
+                        long sec = getSecondsForFrame(framesPlayed);
+                        positionListener.updatePosition(sec);
                         audioStream.closeFrame();
                     }else {
                         stop();
@@ -193,6 +197,11 @@ public class Player {
             line.stop();
             line.flush();
             line.close();
+            try {
+                audioStream.close();
+            } catch (BitstreamException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
@@ -212,6 +221,15 @@ public class Player {
     private long getFrameForSeconds(int seconds){
         double framesPerSecond = (double) 44100 / 1152;
         return (long) (framesPerSecond * seconds);
+    }
+
+    private long getSecondsForFrame(long frames){
+        double secondsPerFrame = (double) 1 / ((double) 44100 / 1152);
+        return (long) (secondsPerFrame * frames);
+    }
+
+    public void setPositionListener(PositionListener listener){
+        this.positionListener = listener;
     }
 
 }

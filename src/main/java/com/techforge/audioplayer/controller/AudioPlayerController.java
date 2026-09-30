@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -21,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -49,7 +51,15 @@ public class AudioPlayerController {
     private Label currentTimeLabel;
 
     @FXML
+    private Slider progressSlider;
+
+    @FXML
     private Label totalTimeLabel;
+
+    @FXML
+    private FontIcon playPauseIcon;
+
+    private boolean playing = true;
 
     private Player player;
 
@@ -78,11 +88,23 @@ public class AudioPlayerController {
     public void initialize(){
         audioNameLabel.setText(audioFile.getName());
         Audio data = player.getAudio();
+        progressSlider.setMax(data.getDuration());
         metadataLabel.setText(data.toString());
         coverImageView.setImage(new Image(new ByteArrayInputStream(data.getImage())));
-        totalTimeLabel.setText(data.getDuration());
+        totalTimeLabel.setText(formatTime(data.getDuration()));
         Platform.runLater(this::setupMarquee);
         backButtonAction();
+        player.setPositionListener((position->{
+            Platform.runLater(()->{
+                if(!progressSlider.isValueChanging()){
+                    progressSlider.setValue(position);
+                }
+                currentTimeLabel.setText(formatTime(position));
+            });
+            progressSlider.setOnMouseReleased(e->{
+                player.startFrom((int) progressSlider.getValue());
+            });
+        }));
         player.startFrom(0);
     }
 
@@ -156,5 +178,19 @@ public class AudioPlayerController {
 
             marquee.play();
         });
+    }
+
+    @FXML
+    private void togglePlayPause() {
+        playing = !playing;
+
+        playPauseIcon.setIconLiteral(
+                playing ? "fas-pause" : "fas-play"
+        );
+        player.pauseOrResume();
+    }
+
+    private String formatTime(long duration){
+        return String.format("%d:%02d", duration / 60, duration %60);
     }
 }

@@ -16,7 +16,7 @@ public class Audio {
 
     private byte[] image;
 
-    private String duration;
+    private long duration;
 
     private long totalFrames;
 
@@ -76,11 +76,11 @@ public class Audio {
         this.image = image;
     }
 
-    public String getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
