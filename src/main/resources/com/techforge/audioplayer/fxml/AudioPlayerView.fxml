@@ -10,6 +10,7 @@
 
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 <?import javafx.scene.layout.StackPane?>
+<?import com.techforge.audioplayer.components.AudioSlider?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
 
@@ -110,9 +111,9 @@
                "/>
 
 
-        <Slider fx:id="progressSlider"
-                styleClass="progress-slider"
-                HBox.hgrow="ALWAYS"/>
+        <AudioSlider fx:id="progressSlider"
+                     styleClass="progress-slider"
+                     HBox.hgrow="ALWAYS"/>
 
 
         <Label fx:id="totalTimeLabel"

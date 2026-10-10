@@ -1,5 +1,6 @@
 package com.techforge.audioplayer.controller;
 
+import com.techforge.audioplayer.components.AudioSlider;
 import com.techforge.audioplayer.core.Player;
 import com.techforge.audioplayer.data.Audio;
 import javafx.animation.KeyFrame;
@@ -7,17 +8,16 @@ import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
-import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -51,7 +51,7 @@ public class AudioPlayerController {
     private Label currentTimeLabel;
 
     @FXML
-    private Slider progressSlider;
+    private AudioSlider progressSlider;
 
     @FXML
     private Label totalTimeLabel;
@@ -89,6 +89,8 @@ public class AudioPlayerController {
         audioNameLabel.setText(audioFile.getName());
         Audio data = player.getAudio();
         progressSlider.setMax(data.getDuration());
+        progressSlider.setActiveColor(Color.DODGERBLUE);
+        progressSlider.setInactiveColor(Color.LIGHTGRAY);
         metadataLabel.setText(data.toString());
         coverImageView.setImage(new Image(new ByteArrayInputStream(data.getImage())));
         totalTimeLabel.setText(formatTime(data.getDuration()));
